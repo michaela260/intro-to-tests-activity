@@ -1,19 +1,26 @@
-from main import count_a_letter
+from main import count_a_letter, INPUT_ERROR
 import pytest
 
-def test_demo_one():
-    num_1 = 8
-    num_2 = 9
+def test_input_is_not_letter():
+    result = count_a_letter("hi", "1")
+    assert result == None
 
-    result = num_1 + num_2
+def test_input_is_not_sentence():
+    result = count_a_letter("", "a")
+    assert result is None
 
-    assert result == 17
+def test_successfully_counts_letters():
+    result = count_a_letter("hello world", "o")
+    assert result == 2
 
-def test_demo_two():
-    num_1 = 18
-    num_2 = 24
+def test_succesfully_counts_0_letters():
+    result = count_a_letter("hello world", "a")
+    assert result == 0
+    
 
-    result = num_1 + num_2
-
-    assert result == 42
-# Delete the demo tests and add your tests here 
+def test_value_error():
+    non_string_input = 1
+    with pytest.raises(ValueError) as received_error:
+      count_a_letter("hello world", non_string_input)
+    expected = f"({non_string_input}, '{INPUT_ERROR}')"
+    assert str(received_error.value) == expected
